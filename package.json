@@ -1,0 +1,15 @@
+{
+  "name": "hack-vote",
+  "version": "0.0.1",
+  "description": "Tallies voting for the People's Choice award at the 5C Hackathon.",
+  "main": " ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andy Russell <arussell123@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.12.2",
+    "nunjucks": "^1.2.0"
+  }
+}
