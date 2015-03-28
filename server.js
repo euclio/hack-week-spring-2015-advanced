@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var nunjucks = require('nunjucks');
 
 var app = express();
@@ -8,6 +9,9 @@ nunjucks.configure('views', {
     autoescape: true,
     express: app
 });
+
+// Configure middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./routes')(app);
 
