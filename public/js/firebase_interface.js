@@ -119,13 +119,14 @@ $(document).ready(function() {
    */
   votes.on('child_added', function(snapshot) {
     var teamKey = snapshot.val();
+    var phoneNumber = snapshot.name();
     teams.child(teamKey).once('value', function(snapshot2) {
       if (snapshot2.val() != null) {
         console.log("op");
         if(teamKey in localVotes) localVotes[teamKey] += 1;
         else localVotes[teamKey] = 1;
         totalVotes += 1;
-        localBallots[snapshot.name()] = teamKey;
+        localBallots[phoneNumber] = teamKey;
         updateScores();
       }
     });
@@ -136,10 +137,13 @@ $(document).ready(function() {
    * we update the vote locally, and update the scores. 
    */
   votes.on('child_changed', function(snapshot) {
-    var prevTeamName = localBallots[snapshot.name()];
+    var phoneNumber = snapshot.name();
+    var newTeamName = snapshot.val();
+    var prevTeamName = localBallots[phoneNumber];
     localVotes[prevTeamName] -= 1;
-    localBallots[snapshot.name()] = snapshot.val();
-    localVotes[snapshot.val()] += 1;
+    localBallots[phoneNumber] = newTeamName;
+    if (localVotes[newTeamName]) localVotes[newTeamName] += 1;
+    else localVotes[newTeamName] = 1;
     updateScores();
   });
 
@@ -150,10 +154,11 @@ $(document).ready(function() {
    */
   votes.on('child_removed', function(snapshot) {
     var prevTeamName = snapshot.val();
+    var phoneNumber = snapshot.name();
     teams.child(prevTeamName).once('value', function(snapshot2) {
       if (snapshot2.val() != null) {
         localVotes[prevTeamName] -= 1;
-        delete localBallots[snapshot.name()];
+        delete localBallots[phoneNumber];
         totalVotes -= 1;
         updateScores();
       }
