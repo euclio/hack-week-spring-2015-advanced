@@ -12,6 +12,9 @@ var totalVotes = 0;
 
 var localBallots = {};
 
+var colorClasses = ["success", "info", "warning", "danger"]
+var numberOfTeams = 0;
+
 /*
  * updateScores updates the graphic. This should be called each time
  * the database changes and we want the front-end to reflect the change.
@@ -67,10 +70,12 @@ $(document).ready(function() {
     // Progress bar element
     var progressbar = $('<div>');
 
+    numberOfTeams %= 4;
     // Attributes for the progress bar (Bootstrap)
+    var progressClass = 'progress-bar progress-bar-' + colorClasses[numberOfTeams];
     var progressAttr =
     {
-      'class': 'progress-bar',
+      'class': progressClass,
       'role': 'progressbar',
       'aria-valuenow': '0',
       'aria-valuemin': '0',
@@ -90,6 +95,7 @@ $(document).ready(function() {
     newTeamVote.append(progressbar);
     teamNames.append(newTeamName);
     teamVotes.append(newTeamVote);
+    numberOfTeams++;
     updateScores();
   });
 
