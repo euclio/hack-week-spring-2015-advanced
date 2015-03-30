@@ -1,5 +1,9 @@
 # Created by https://www.gitignore.io
 
+### Config ###
+# Config json file
+config.json
+
 ### Node ###
 # Logs
 logs
