@@ -40,3 +40,9 @@ exports.isValidRequest = function(req) {
     // return hash == signature;
     return true;
 };
+
+exports.createSmsResponse = function(body) {
+    var response = new twilio.TwimlResponse();
+    response.sms(body);
+    return response.toString();
+};

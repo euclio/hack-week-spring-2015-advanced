@@ -15,12 +15,27 @@ module.exports = function(app) {
         var isValid = messaging.isValidRequest(req);
         console.log(isValid);
         if (isValid) {
-            // Store the vote by phone number. This ensures that everyone gets
-            // a single vote, but people may change their vote.
-            var voteData = {};
-            voteData[req.body.From] = req.body.Body;
-            db.child('votes').update(voteData);
-            res.send('Valid Request');
+            var teamName = req.body.Body || null;
+            db.child('teams').once('value', function(snapshot) {
+                if (snapshot.hasChild(teamName)) {
+                    // The team voted for exists in the database.
+
+                    // We store the vote by phone number. This ensures that
+                    // everyone only gets a single vote, but it allows voters
+                    // to change their vote after casting it.
+                    var voteData = {};
+                    voteData[req.body.From] = req.body.Body;
+                    db.child('votes').update(voteData);
+
+                    res.send(messaging.createSmsResponse(
+                        'Your vote for ' + teamName + ' has been recorded.'));
+                } else {
+                    // The user supplied an invalid team name.
+                    res.send(messaging.createSmsResponse(
+                        '"' + teamName + '" is not a valid team. ' +
+                        'Check your spelling.'));
+                }
+            });
         } else {
             res.status(403).send('Forbidden');
         }
