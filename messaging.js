@@ -38,7 +38,11 @@ exports.isValidRequest = function(req) {
     // console.log(hash, signature);
 
     // return hash == signature;
-    return true;
+
+    // Let's make sure that the body contains a valid firebase node name.
+    var isValidFirebaseNode = req.body.Body &&
+        /^[a-zA-Z0-9]+$/.test(req.body.Body);
+    return isValidFirebaseNode;
 };
 
 exports.createSmsResponse = function(body) {

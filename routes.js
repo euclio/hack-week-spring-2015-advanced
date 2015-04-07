@@ -13,7 +13,6 @@ module.exports = function(app) {
 
     app.post('/vote', function(req, res) {
         var isValid = messaging.isValidRequest(req);
-        console.log(isValid);
         if (isValid) {
             var teamName = req.body.Body || null;
             db.child('teams').once('value', function(snapshot) {
