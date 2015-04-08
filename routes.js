@@ -12,11 +12,11 @@ module.exports = function(app) {
     });
 
     app.post('/vote', function(req, res) {
-        var isValid = messaging.isValidRequest(req);
-        if (isValid) {
+        if (messaging.isTwilioRequest(req)) {
             var teamName = req.body.Body || null;
             db.child('teams').once('value', function(snapshot) {
-                if (snapshot.hasChild(teamName)) {
+                if (messaging.isValidRequest(req) &&
+                        snapshot.hasChild(teamName)) {
                     // The team voted for exists in the database.
 
                     // We store the vote by phone number. This ensures that
