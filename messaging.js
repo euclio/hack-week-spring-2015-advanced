@@ -14,7 +14,7 @@ exports.isTwilioRequest = function(req) {
 exports.isValidRequest = function(req) {
     // Let's make sure that the body contains a valid firebase node name.
     var isValidFirebaseNode = req.body.Body &&
-        /^[a-zA-Z0-9]+$/.test(req.body.Body);
+        !/[.$#\[\]\/\x00-\x1F\x7F]/.test(req.body.Body);
     return isValidFirebaseNode;
 };
 
